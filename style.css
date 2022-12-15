@@ -1,0 +1,16 @@
+.center {
+    margin: auto;
+    width: 200px;
+    border: 0px;
+    padding: 0px;
+}
+
+body {
+    background-image: url(bg.png);
+    background-size: cover;
+    font-family: 'Tahoma', sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
