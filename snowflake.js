@@ -1,4 +1,5 @@
-const CANVAS_SIZE = 200;
+const CANVAS_SIZE = 210;
+const ARM_LENGHT = 100;
 const ARM_WIDTH = 3;
 //https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 const LIGHT_BLUE = [
@@ -53,6 +54,23 @@ const GREEN = [
   "#E8F5E9"
 ]
 
+const PURPLE = [
+  "#4A148C",
+  "#6A1B9A",
+  "#7B1FA2",
+  "#8E24AA",
+  "#9C27B0",
+  "#AB47BC",
+  "#BA68C8",
+  "#CE93D8",
+  "#E1BEE7",
+  "#F3E5F5"
+]
+
+const ALL = [
+  LIGHT_BLUE, YELLOW, RED, GREEN, PURPLE
+]
+
 class Point {
   constructor(x, y) {
     this.x = x;
@@ -64,18 +82,19 @@ class Point {
 }
 
 class Particle {
-  constructor() {
-    this.from = new Point(0, -CANVAS_SIZE / 2);
-    this.to = new Point(0, -CANVAS_SIZE / 2);
+  constructor(step) {
+    this.step = step;
+    this.from = new Point(0, -ARM_LENGHT);
+    this.to = new Point(0, -ARM_LENGHT);
   }
   update() {
     this.from = new Point(this.to.x, this.to.y);
-    const x = nextRandom(-ARM_WIDTH, ARM_WIDTH);
+    const x = randomInRange(-this.step, this.step);
     this.to = this.from.add(x, 1);
   }
 }
 
-function nextRandom(min, max) {
+function randomInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -87,15 +106,34 @@ function toRadians(degrees) {
 const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
 ctx.translate(CANVAS_SIZE / 2, CANVAS_SIZE / 2);
-ctx.lineWidth = 3;
 
-function generate(passes, arms, colors) {
+function debug() {
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "black";
+  ctx.beginPath();
+  ctx.moveTo(0, -ARM_LENGHT);
+  ctx.lineTo(0, ARM_LENGHT);
+  ctx.moveTo(-ARM_LENGHT, 0);
+  ctx.lineTo(ARM_LENGHT, 0);
+  ctx.stroke();
+}
+
+/**
+ * Generate a "snowflake".
+ * @param {*} passes number of particles for the arm
+ * @param {*} arms number of arms (vertices)
+ * @param {*} colors color palette
+ * @param {*} thickness pen width
+ * @param {*} step random walk step
+ */
+function generate(passes, arms, colors, thickness, step) {
+  ctx.lineWidth = thickness;
   ctx.clearRect(-CANVAS_SIZE/2, -CANVAS_SIZE/2, CANVAS_SIZE, CANVAS_SIZE);
   for (p = 0; p < passes; p++) {
     ctx.strokeStyle = colors[p % colors.length];
     ctx.beginPath();
-    var particle = new Particle();
-    for (i = 0; i < CANVAS_SIZE / 2; i++) {
+    var particle = new Particle(step);
+    for (i = 0; i < ARM_LENGHT; i++) {
       particle.update();
       for (r = 0; r < arms; r++) {
         ctx.moveTo(particle.from.x, particle.from.y);
@@ -109,19 +147,34 @@ function generate(passes, arms, colors) {
     }
     ctx.stroke();
   }
+  //debug();
 }
 
 
 function snowflake() {
-  generate(20, 6, LIGHT_BLUE);
+  generate(20, 6, LIGHT_BLUE, 3, 3);
 }
 
 function star() {
-  generate(20, 5, YELLOW);
+  generate(20, 5, YELLOW, 3, 2);
+}
+
+function flower() {
+  generate(15, 12, RED, 5, 3);
+}
+
+function triangle() {
+  generate(25, 3, PURPLE, 5, 4);
 }
 
 function random() {
-  generate(nextRandom(5, 20), nextRandom(3, 8), Math.random() < 0.5 ? RED : GREEN);
+  const passes = randomInRange(5, 20);
+  const arms = randomInRange(3, 12);
+  const colors = ALL[randomInRange(0, ALL.length - 1)];
+  const thickness = randomInRange(1, 5);
+  const step = randomInRange(1, 5);
+  console.log([passes, arms, colors, thickness, step])
+  generate(passes, arms, colors, thickness, step);
 }
 
 snowflake();
