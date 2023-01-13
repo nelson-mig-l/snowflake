@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Manually crafted HTML -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snowflake</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>A unique snowflake just for you</h1>
+    <div class="center">
+        <canvas id="canvas" width="210" height="210">
+        </canvas>
+        <br />
+        <button onclick="snowflake(document.getElementById('canvas'));">I want another.</button>
+        <button onclick="random(document.getElementById('canvas'));">I'm feeling lucky.</button>
+        <br />
+        <p>I don't like snowflakes. I prefer...</p>
+        <button onclick="star(document.getElementById('canvas'));">stars</button>
+        <button onclick="flower(document.getElementById('canvas'));">flowers</button>
+        <button onclick="triangle(document.getElementById('canvas'));">triangles</button>
+        <br />
+    </div>
+    <script src="snowflake.js"></script>
+    <script type="text/javascript">
+        snowflake(document.getElementById('canvas'));;
+    </script>
+</body>
+<!-- https://github.com/nelson-mig-l/snowflake -->
+
+</html>
