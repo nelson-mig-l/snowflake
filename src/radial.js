@@ -140,4 +140,30 @@ function toRadians(degrees) {
   return degrees * Math.PI / 180;
 }
 
-module.exports = { Radial };
+function snowflake(canvas, thickness, step) {
+  new Radial(canvas).generate(20, 6, LIGHT_BLUE, thickness, step);
+}
+
+function star(canvas, thickness, step) {
+  new Radial(canvas).generate(20, 5, YELLOW, thickness, step);
+}
+
+function flower(canvas, thickness, step) {
+  new Radial(canvas).generate(15, 12, RED, thickness, step);
+}
+
+function triangle(canvas, thickness, step) {
+  new Radial(canvas).generate(25, 3, PURPLE, thickness, step);
+}
+
+function random(canvas) {
+  const passes = randomInRange(5, 20);
+  const arms = randomInRange(3, 12);
+  const colors = ALL[randomInRange(0, ALL.length - 1)];
+  const thickness = randomInRange(1, 5);
+  const step = randomInRange(1, 5);
+  console.log([passes, arms, colors, thickness, step])
+  new Radial(canvas).generate(passes, arms, colors, thickness, step);
+}
+
+module.exports = { snowflake, star, flower, triangle, random };
