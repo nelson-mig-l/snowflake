@@ -14,18 +14,40 @@
         <canvas id="canvas" width="210" height="210">
         </canvas>
         <br />
-        <button onclick="snowflake(document.getElementById('canvas'));">I want another.</button>
-        <button onclick="random(document.getElementById('canvas'));">I'm feeling lucky.</button>
+        <button onclick="snowflake();">I want another.</button>
+        <button onclick="random();">I'm feeling lucky.</button>
         <br />
         <p>I don't like snowflakes. I prefer...</p>
-        <button onclick="star(document.getElementById('canvas'));">stars</button>
-        <button onclick="flower(document.getElementById('canvas'));">flowers</button>
-        <button onclick="triangle(document.getElementById('canvas'));">triangles</button>
+        <button onclick="star();">stars</button>
+        <button onclick="flower();">flowers</button>
+        <button onclick="triangle();">triangles</button>
         <br />
     </div>
-    <script src="snowflake.js"></script>
+    <script src="radial.js"></script>
     <script type="text/javascript">
-        snowflake(document.getElementById('canvas'));;
+        const canvas = document.getElementById("canvas");
+        function snowflake() {
+            new Radial(canvas).generate(20, 6, LIGHT_BLUE, 3, 3);
+        }
+        function star() {
+            new Radial(canvas).generate(20, 5, YELLOW, 3, 2);
+        }
+        function flower() {
+            new Radial(canvas).generate(15, 12, RED, 5, 3);
+        }
+        function triangle() {
+            new Radial(canvas).generate(25, 3, PURPLE, 5, 4);
+        }
+        function random() {
+            const passes = randomInRange(5, 20);
+            const arms = randomInRange(3, 12);
+            const colors = ALL[randomInRange(0, ALL.length - 1)];
+            const thickness = randomInRange(1, 5);
+            const step = randomInRange(1, 5);
+            console.log([passes, arms, colors, thickness, step])
+            new Radial(canvas).generate(passes, arms, colors, thickness, step);
+        }
+        snowflake();
     </script>
 </body>
 <!-- https://github.com/nelson-mig-l/snowflake -->
